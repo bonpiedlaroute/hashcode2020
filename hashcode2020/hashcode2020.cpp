@@ -33,7 +33,7 @@ void read_input(const std::string& filename)
          std::vector <std::string> tokens;
          split(line, " ", tokens);
 
-         // insert tokens in the correct data structure
+         // insert tokens in the correct data structure test
       }
    }
    else
