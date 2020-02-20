@@ -63,7 +63,7 @@ void write_output(const std::string& filename)
    f.close();
 }
 
-int main(char argc, char* argv[])
+int main(int argc, char* argv[])
 {
    if (argc != 3)
    {
