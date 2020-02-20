@@ -6,12 +6,10 @@
 
 using namespace std;
 
-int M, number;
+float a = 0.5;
+float b = 1-a;
 
-int best = 0;
-vector<int> solution;
-vector<int> p;
-vector<int> s;
+double totalScore = 0;
 
 int B,L,D;
 struct Book
@@ -29,7 +27,9 @@ struct Lib
    int T;
    int M;
    set<int> booksId;
-   double naiveRatio;
+   double score;
+   double scorePercentage;
+   double finalScore;
 
    Lib(int _id, int n, int t, int m, set<int>& bks): 
       id(_id), N(n), T(t), M(m), booksId(bks)
@@ -39,7 +39,7 @@ struct Lib
       {
          sum += books[id].score;
       }
-      naiveRatio = ((double)sum)/M;
+      score = sum;
    }
 };
 
@@ -49,13 +49,13 @@ struct Naive
 {
    bool operator()(Lib& a, Lib& b) const
    {
-      if (a.naiveRatio != b.naiveRatio)
+      if (a.T != b.T)
       {
-         return a.naiveRatio > b.naiveRatio;
+         return a.T < b.T;
       }
       else
       {
-         return a.T < b.T;
+         return a.score > b.score;
       }
    }
 };
@@ -84,18 +84,28 @@ int main(int argc, const char* argv[])
          input >> d;
          books.insert(d);
       }
-      libs.push_back({i, n, t, m, books});
+      Lib lib(i, n, t, m, books);
+      libs.push_back(lib);
+      totalScore += lib.score;
+   }
+
+   for (auto& lib : libs)
+   {
+      lib.scorePercentage = lib.score/totalScore;
    }
    
    Naive comp;
    std::sort(libs.begin(), libs.end(), comp);
    
    ofstream file;
-   file.open("output.txt");
+   string outputName = argv[1];
+   outputName.append("output.txt");
+   file.open(outputName);
    file << L << endl;
    for (int i = 0; i < L; i++)
    {
       Lib& lib = libs[i];
+      cout << lib.scoreRatio << ":" << lib.T << " ";
       file << lib.id << " " << lib.N << endl;
       auto& bks = lib.booksId;
       for (int bookId : bks)
@@ -105,7 +115,8 @@ int main(int argc, const char* argv[])
       file << endl;
    }
    file.close();
-
+   
+   cout << endl;
    cout << "End" << endl;
    return 0;
 }
