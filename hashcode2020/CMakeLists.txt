@@ -8,5 +8,4 @@ project(hashcode)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(hashcode pizza.cpp
-                        MyFile.h)
+add_executable(hashcode scan.cpp)
